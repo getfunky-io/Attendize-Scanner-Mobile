@@ -1,4 +1,4 @@
-package com.aplusclc.tiket
+package io.getfunky.tickets
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -10,13 +10,24 @@ class AdminDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _createHeader(),
-          _createDrawerItem(icon: Icons.event, text: 'Acara', onTap: () => Navigator.pushReplacementNamed(context, Routes.acara)),
-          _createDrawerItem(icon: Icons.calendar_today, text: 'Semua Acara', onTap: () => Navigator.pushReplacementNamed(context, Routes.acaraall)),
+          _createDrawerItem(
+              icon: Icons.event,
+              text: 'Acara',
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, Routes.acara)),
+          _createDrawerItem(
+              icon: Icons.calendar_today,
+              text: 'All Events',
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, Routes.acaraall)),
           Expanded(child: Container()),
           Divider(),
           Column(
             children: <Widget>[
-              _createFooterItem(icon: Icons.exit_to_app, text: 'Logout', onTap: () => _logout(context))
+              _createFooterItem(
+                  icon: Icons.exit_to_app,
+                  text: 'Logout',
+                  onTap: () => _logout(context))
             ],
           )
         ],
@@ -24,7 +35,8 @@ class AdminDrawer extends StatelessWidget {
     );
   }
 
-  Widget _createFooterItem({IconData icon, String text, GestureTapCallback onTap}){
+  Widget _createFooterItem(
+      {IconData icon, String text, GestureTapCallback onTap}) {
     return ListTile(
       title: Row(
         children: <Widget>[
@@ -46,12 +58,13 @@ class AdminDrawer extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fill,
-                image: AssetImage('assets/images/drawer_header_background.png'))),
+                image:
+                    AssetImage('assets/images/drawer_header_background.png'))),
         child: Stack(children: <Widget>[
           Positioned(
               bottom: 12.0,
               left: 16.0,
-              child: Text("A-Tiket+",
+              child: Text("GetFunky",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -59,7 +72,8 @@ class AdminDrawer extends StatelessWidget {
         ]));
   }
 
-  Widget _createDrawerItem({IconData icon, String text, GestureTapCallback onTap}){
+  Widget _createDrawerItem(
+      {IconData icon, String text, GestureTapCallback onTap}) {
     return ListTile(
       title: Row(
         children: <Widget>[
@@ -74,13 +88,11 @@ class AdminDrawer extends StatelessWidget {
     );
   }
 
-  void _logout(BuildContext context) async{
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.remove('user');
-      localStorage.remove('api_token');
-      Navigator.pushReplacement(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => LoginPage()));
+  void _logout(BuildContext context) async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.remove('user');
+    localStorage.remove('api_token');
+    Navigator.pushReplacement(
+        context, new MaterialPageRoute(builder: (context) => LoginPage()));
   }
 }

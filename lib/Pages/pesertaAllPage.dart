@@ -15,7 +15,7 @@ class PesertaAllPage extends StatefulWidget {
   _PesertaAllPageState createState() => _PesertaAllPageState();
 }
 
-class _PesertaAllPageState extends State<PesertaAllPage>{
+class _PesertaAllPageState extends State<PesertaAllPage> {
   List data;
   bool _isLoading = true;
   var _message = '';
@@ -26,8 +26,8 @@ class _PesertaAllPageState extends State<PesertaAllPage>{
   void initState() {
     super.initState();
     this.setState(() {
-      _isLoading=true;
-      _acaraId=widget.acaraId.toString();
+      _isLoading = true;
+      _acaraId = widget.acaraId.toString();
     });
 
     this._loadData();
@@ -39,20 +39,23 @@ class _PesertaAllPageState extends State<PesertaAllPage>{
   }
 
   _loadData() async {
-    var _sendData = Map<String,dynamic>();
+    var _sendData = Map<String, dynamic>();
     _sendData['event_id'] = _acaraId.toString();
-    var res = await CallApi().getData(_sendData, 'attendees/showattendeesevent/');
+    var res =
+        await CallApi().getData(_sendData, 'attendees/showattendeesevent/');
     var body = json.decode(res.body);
 
-    if(body['success'] && res.statusCode==200){
+    if (body['success'] && res.statusCode == 200) {
       data = body['data']['attendees'];
-    }
-    else{
-      var errorMessage = body['message']+((res.statusCode==200)?'':'. Kesalahan pada server : '+res.statusCode.toString());
+    } else {
+      var errorMessage = body['message'] +
+          ((res.statusCode == 200)
+              ? ''
+              : '. Kesalahan pada server : ' + res.statusCode.toString());
       showErrorToast(context, errorMessage);
     }
     setState(() {
-      _isLoading=false;
+      _isLoading = false;
     });
   }
 
@@ -60,7 +63,7 @@ class _PesertaAllPageState extends State<PesertaAllPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Semua Peserta"),
+        title: Text("All participants"),
       ),
       body: Container(
         child: Column(
@@ -72,14 +75,12 @@ class _PesertaAllPageState extends State<PesertaAllPage>{
                 gradient: LinearGradient(
                     colors: [ACCENT_COLOR, PRIMARY_COLOR],
                     begin: Alignment.centerRight,
-                    end: Alignment.centerLeft
-                ),
+                    end: Alignment.centerLeft),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(left: 100, right: 100),
                 child: Center(
-                  child:
-                  Container(
+                  child: Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Column(
                       children: <Widget>[
@@ -88,7 +89,10 @@ class _PesertaAllPageState extends State<PesertaAllPage>{
                           color: Colors.white,
                           size: 50.0,
                         ),
-                        Text('Daftar Peserta', style: TextStyle(color: Colors.white),)
+                        Text(
+                          'List of Participants',
+                          style: TextStyle(color: Colors.white),
+                        )
                       ],
                     ),
                   ),
@@ -99,45 +103,65 @@ class _PesertaAllPageState extends State<PesertaAllPage>{
               height: 70,
             ),*/
             Expanded(
-              child:
-              _isLoading ?
-              loadingWidgetCenter(context)
-                  :
-              (data.isEmpty)?
-              Text("Tidak ada yang mendaftar pada acara ini")
-                  :
-              LiquidPullToRefresh(
-                onRefresh: ()=>_loadData(),
-                backgroundColor: PRIMARY_COLOR,
-                color: Colors.white,
-                child: ListView.builder(
-                  itemCount: data.isEmpty ? 0 : data.length,
-                  itemBuilder: (BuildContext context, int index){
-                    return Card(
-                      elevation: 5,
-                      color: data[index]['has_arrived']==0 ? Color(0xFFffb0b9) : Color(0xFF6bed96),
-                      child: ListTile(
-                        title: Text(data[index]['first_name']+' '+data[index]['last_name'], style: TextStyle(color: Colors.white),),
-                        subtitle:
-                        Container(
-                          child: (
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(data[index]['email']??'-', style: TextStyle(fontSize: 13, color: data[index]['has_arrived']==0 ?Color(0xFFa10618):Color(0xFF007326))),
-                                  Text(data[index]['order_reference']??'-', style: TextStyle(fontSize: 12, color: Colors.white)),
-                                  Text(data[index]['phone_number']??'-', style: TextStyle(fontSize: 10, color: Colors.white)),
-                                  Text(data[index]['school']??'-', style: TextStyle(fontSize: 10, color: Colors.white)),
-                                ],
-                              )
+              child: _isLoading
+                  ? loadingWidgetCenter(context)
+                  : (data.isEmpty)
+                      ? Text("No one signed up to this event")
+                      : LiquidPullToRefresh(
+                          onRefresh: () => _loadData(),
+                          backgroundColor: PRIMARY_COLOR,
+                          color: Colors.white,
+                          child: ListView.builder(
+                            itemCount: data.isEmpty ? 0 : data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                elevation: 5,
+                                color: data[index]['has_arrived'] == 0
+                                    ? Color(0xFFffb0b9)
+                                    : Color(0xFF6bed96),
+                                child: ListTile(
+                                  title: Text(
+                                    data[index]['first_name'] +
+                                        ' ' +
+                                        data[index]['last_name'],
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  subtitle: Container(
+                                    child: (Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(data[index]['email'] ?? '-',
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: data[index]
+                                                            ['has_arrived'] ==
+                                                        0
+                                                    ? Color(0xFFa10618)
+                                                    : Color(0xFF007326))),
+                                        Text(
+                                            data[index]['order_reference'] ??
+                                                '-',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white)),
+                                        Text(data[index]['phone_number'] ?? '-',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.white)),
+                                        Text(data[index]['school'] ?? '-',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.white)),
+                                      ],
+                                    )),
+                                  ),
+                                  isThreeLine: true,
+                                ),
+                              );
+                            },
                           ),
                         ),
-                        isThreeLine: true,
-                      ),
-                    );
-                  },
-                ),
-              ),
             )
           ],
         ),
